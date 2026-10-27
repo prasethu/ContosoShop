@@ -1,0 +1,35 @@
+@page "/products"
+@using ContosoShop.Catalog
+@inject IProductCatalog ProductCatalog
+
+<PageTitle>Products</PageTitle>
+
+<h1>Products</h1>
+
+<p>Browse the ContosoShop collection.</p>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    @foreach (var product in products)
+    {
+        <div class="col">
+            <article class="card h-100">
+                <img class="card-img-top" src="@product.ImageUrl" alt="@product.Name" />
+                <div class="card-body">
+                    <p class="text-secondary mb-2">@product.Category</p>
+                    <h2 class="h5 card-title">@product.Name</h2>
+                    <p class="card-text">@product.Description</p>
+                    <p class="fw-semibold mb-0">@product.Price.ToString("C")</p>
+                </div>
+            </article>
+        </div>
+    }
+</div>
+
+@code {
+    private IReadOnlyList<Product> products = [];
+
+    protected override void OnInitialized()
+    {
+        products = ProductCatalog.GetProducts();
+    }
+}
