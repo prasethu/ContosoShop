@@ -4,24 +4,30 @@
 
 <PageTitle>Products</PageTitle>
 
-<h1>Products</h1>
+<header class="catalog-header">
+    <div>
+        <p class="eyebrow">The collection</p>
+        <h1>Everyday products, thoughtfully selected.</h1>
+    </div>
+    <p>Six practical finds for your workspace, home, and next day out.</p>
+</header>
 
-<p>Browse the ContosoShop collection.</p>
-
-<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+<div class="product-grid">
     @foreach (var product in products)
     {
-        <div class="col">
-            <article class="card h-100">
-                <img class="card-img-top" src="@product.ImageUrl" alt="@product.Name" />
-                <div class="card-body">
-                    <p class="text-secondary mb-2">@product.Category</p>
-                    <h2 class="h5 card-title">@product.Name</h2>
-                    <p class="card-text">@product.Description</p>
-                    <p class="fw-semibold mb-0">@product.Price.ToString("C")</p>
+        <article class="product-card">
+            <div class="product-image">
+                <img src="@product.ImageUrl" alt="@product.Name" />
+            </div>
+            <div class="product-body">
+                <p class="product-category">@product.Category</p>
+                <div class="product-heading">
+                    <h2>@product.Name</h2>
+                    <p class="product-price">@product.Price.ToString("C")</p>
                 </div>
-            </article>
-        </div>
+                <p class="product-description">@product.Description</p>
+            </div>
+        </article>
     }
 </div>
 
