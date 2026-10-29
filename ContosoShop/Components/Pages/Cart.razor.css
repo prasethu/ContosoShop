@@ -1,0 +1,27 @@
+h1 {
+    margin-bottom: 1.5rem;
+    color: #17352b;
+}
+
+.cart-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e3e7df;
+    border-radius: 1rem;
+    background: white;
+}
+
+.cart-table {
+    margin: 0;
+    color: #24352f;
+}
+
+.cart-table th, .cart-table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.cart-total {
+    color: #17352b;
+    font-size: 1.25rem;
+}

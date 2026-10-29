@@ -1,6 +1,8 @@
 @page "/products"
 @using ContosoShop.Catalog
+@using ContosoShop.Cart
 @inject IProductCatalog ProductCatalog
+@inject ShoppingCart ShoppingCart
 
 <PageTitle>Products</PageTitle>
 
@@ -11,6 +13,8 @@
     </div>
     <p>Six practical finds for your workspace, home, and next day out.</p>
 </header>
+
+<p role="status">@statusMessage</p>
 
 <div class="product-grid">
     @foreach (var product in products)
@@ -26,6 +30,8 @@
                     <p class="product-price">@product.Price.ToString("C")</p>
                 </div>
                 <p class="product-description">@product.Description</p>
+                <button type="button" class="btn btn-primary mt-3" aria-label="Add @product.Name to cart"
+                        @onclick="() => AddToCart(product)">Add to cart</button>
             </div>
         </article>
     }
@@ -33,6 +39,13 @@
 
 @code {
     private IReadOnlyList<Product> products = [];
+    private string? statusMessage;
+
+    private void AddToCart(Product product)
+    {
+        ShoppingCart.Add(product);
+        statusMessage = $"Added {product.Name} to your cart.";
+    }
 
     protected override void OnInitialized()
     {
