@@ -25,3 +25,14 @@ h1 {
     color: #17352b;
     font-size: 1.25rem;
 }
+
+.quantity-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.quantity-value {
+    min-width: 1.5rem;
+    text-align: center;
+}

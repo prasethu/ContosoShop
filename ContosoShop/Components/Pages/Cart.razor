@@ -30,8 +30,20 @@ else
                     <tr @key="line.Product.Id">
                         <th scope="row">@line.Product.Name</th>
                         <td>@line.Product.Price.ToString("C")</td>
-                        <td>@line.Quantity</td>
-                        <td>@line.LineTotal.ToString("C")</td>
+                        <td>
+                            <div class="quantity-controls">
+                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        aria-label="Decrease quantity of @line.Product.Name"
+                                        disabled="@(line.Quantity == 1)"
+                                        @onclick="() => ShoppingCart.DecreaseQuantity(line.Product.Id)">-</button>
+                                <span class="quantity-value" aria-live="polite">@line.Quantity</span>
+                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        aria-label="Increase quantity of @line.Product.Name"
+                                        disabled="@(line.Quantity == int.MaxValue)"
+                                        @onclick="() => ShoppingCart.IncreaseQuantity(line.Product.Id)">+</button>
+                            </div>
+                        </td>
+                        <td class="line-total">@line.LineTotal.ToString("C")</td>
                     </tr>
                 }
             </tbody>

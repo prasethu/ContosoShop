@@ -77,11 +77,43 @@ public sealed class StorefrontComponentTests
         Assert.HasCount(2, rows);
         CollectionAssert.AreEqual(
             new[] { "Everyday Backpack", 49m.ToString("C"), "2", 98m.ToString("C") },
-            rows[0].Children.Select(cell => cell.TextContent.Trim()).ToArray());
+            rows[0].Children.Select(cell => (cell.QuerySelector(".quantity-value") ?? cell).TextContent.Trim()).ToArray());
         CollectionAssert.AreEqual(
             new[] { "Insulated Travel Mug", 24.50m.ToString("C"), "1", 24.50m.ToString("C") },
-            rows[1].Children.Select(cell => cell.TextContent.Trim()).ToArray());
+            rows[1].Children.Select(cell => (cell.QuerySelector(".quantity-value") ?? cell).TextContent.Trim()).ToArray());
         Assert.AreEqual(122.50m.ToString("C"), cart.Find(".cart-total strong").TextContent);
+    }
+
+    [TestMethod]
+    public void Cart_AdjustingQuantities_UpdatesTotalsAndDisablesDecreaseAtOne()
+    {
+        using var context = CreateContext();
+        var shoppingCart = context.Services.GetRequiredService<ShoppingCart>();
+        var products = new InMemoryProductCatalog().GetProducts();
+        shoppingCart.Add(products[0]);
+        shoppingCart.Add(products[1]);
+        var cart = context.Render<CartPage>();
+
+        Assert.IsTrue(cart.Find("button[aria-label='Decrease quantity of Everyday Backpack']").HasAttribute("disabled"));
+
+        cart.Find("button[aria-label='Increase quantity of Everyday Backpack']").Click();
+        cart.Find("button[aria-label='Increase quantity of Everyday Backpack']").Click();
+
+        Assert.AreEqual("3", cart.Find("tbody tr .quantity-value").TextContent);
+        Assert.AreEqual(147m.ToString("C"), cart.Find("tbody tr .line-total").TextContent);
+        Assert.AreEqual(171.50m.ToString("C"), cart.Find(".cart-total strong").TextContent);
+        Assert.IsFalse(cart.Find("button[aria-label='Decrease quantity of Everyday Backpack']").HasAttribute("disabled"));
+
+        cart.Find("button[aria-label='Decrease quantity of Everyday Backpack']").Click();
+        cart.Find("button[aria-label='Decrease quantity of Everyday Backpack']").Click();
+
+        Assert.AreEqual("1", cart.Find("tbody tr .quantity-value").TextContent);
+        Assert.AreEqual(49m.ToString("C"), cart.Find("tbody tr .line-total").TextContent);
+        Assert.AreEqual(73.50m.ToString("C"), cart.Find(".cart-total strong").TextContent);
+        Assert.IsTrue(cart.Find("button[aria-label='Decrease quantity of Everyday Backpack']").HasAttribute("disabled"));
+        Assert.HasCount(2, cart.FindAll("tbody tr"));
+        Assert.AreEqual("1", cart.FindAll(".quantity-value")[1].TextContent);
+        Assert.AreEqual(24.50m.ToString("C"), cart.FindAll(".line-total")[1].TextContent);
     }
 
     [TestMethod]
