@@ -6,6 +6,8 @@
 
 <h1>Your cart</h1>
 
+<p role="status">@statusMessage</p>
+
 @if (ShoppingCart.Lines.Count == 0)
 {
     <p>Your cart is empty.</p>
@@ -22,6 +24,7 @@ else
                     <th scope="col">Unit price</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Line total</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +47,11 @@ else
                             </div>
                         </td>
                         <td class="line-total">@line.LineTotal.ToString("C")</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                    aria-label="Remove @line.Product.Name from cart"
+                                    @onclick="() => RemoveProduct(line)">Remove</button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -51,4 +59,15 @@ else
     </div>
     <p class="cart-total">Cart total: <strong>@ShoppingCart.Total.ToString("C")</strong></p>
     <a href="products">Continue shopping</a>
+}
+
+@code {
+    private string? statusMessage;
+
+    private void RemoveProduct(CartLine line)
+    {
+        statusMessage = ShoppingCart.Remove(line.Product.Id)
+            ? $"Removed {line.Product.Name} from your cart."
+            : $"{line.Product.Name} is no longer in your cart.";
+    }
 }

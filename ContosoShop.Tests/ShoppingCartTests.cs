@@ -133,4 +133,63 @@ public sealed class ShoppingCartTests
         Assert.AreEqual(originalLine, cart.Lines[0]);
         Assert.AreEqual(49m, cart.Total);
     }
+
+    [TestMethod]
+    public void Remove_RemovesWholeLineAndPreservesOtherSelections()
+    {
+        var cart = new ShoppingCart();
+        var products = new InMemoryProductCatalog().GetProducts();
+        cart.Add(products[0]);
+        cart.Add(products[0]);
+        cart.Add(products[1]);
+        cart.IncreaseQuantity(products[1].Id);
+        var remainingLine = cart.Lines[1];
+
+        Assert.IsTrue(cart.Remove(products[0].Id));
+
+        Assert.HasCount(1, cart.Lines);
+        Assert.AreEqual(remainingLine, cart.Lines[0]);
+        Assert.AreEqual(49m, cart.Total);
+
+        Assert.IsFalse(cart.Remove(products[0].Id));
+
+        Assert.HasCount(1, cart.Lines);
+        Assert.AreEqual(remainingLine, cart.Lines[0]);
+        Assert.AreEqual(49m, cart.Total);
+    }
+
+    [TestMethod]
+    public void Remove_LastLine_EmptiesCartAndAllowsAddingAgain()
+    {
+        var cart = new ShoppingCart();
+        var product = new InMemoryProductCatalog().GetProducts()[0];
+        cart.Add(product);
+        cart.IncreaseQuantity(product.Id);
+
+        Assert.IsTrue(cart.Remove(product.Id));
+
+        Assert.IsEmpty(cart.Lines);
+        Assert.AreEqual(0m, cart.Total);
+
+        cart.Add(product);
+
+        Assert.HasCount(1, cart.Lines);
+        Assert.AreEqual(product, cart.Lines[0].Product);
+        Assert.AreEqual(1, cart.Lines[0].Quantity);
+        Assert.AreEqual(49m, cart.Total);
+    }
+
+    [TestMethod]
+    public void Remove_UnknownProduct_ReturnsFalseWithoutChangingCart()
+    {
+        var cart = new ShoppingCart();
+        cart.Add(new InMemoryProductCatalog().GetProducts()[0]);
+        var originalLine = cart.Lines[0];
+
+        Assert.IsFalse(cart.Remove(999));
+
+        Assert.HasCount(1, cart.Lines);
+        Assert.AreEqual(originalLine, cart.Lines[0]);
+        Assert.AreEqual(49m, cart.Total);
+    }
 }

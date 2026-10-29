@@ -18,6 +18,8 @@ public sealed class ShoppingCart
 
     public void DecreaseQuantity(int productId) => AdjustQuantity(productId, -1);
 
+    public bool Remove(int productId) => lines.RemoveAll(line => line.Product.Id == productId) > 0;
+
     private void AdjustQuantity(int productId, int change)
     {
         var index = lines.FindIndex(line => line.Product.Id == productId);

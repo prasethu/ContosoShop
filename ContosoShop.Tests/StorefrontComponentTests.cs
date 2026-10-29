@@ -77,10 +77,10 @@ public sealed class StorefrontComponentTests
         Assert.HasCount(2, rows);
         CollectionAssert.AreEqual(
             new[] { "Everyday Backpack", 49m.ToString("C"), "2", 98m.ToString("C") },
-            rows[0].Children.Select(cell => (cell.QuerySelector(".quantity-value") ?? cell).TextContent.Trim()).ToArray());
+            rows[0].Children.Take(4).Select(cell => (cell.QuerySelector(".quantity-value") ?? cell).TextContent.Trim()).ToArray());
         CollectionAssert.AreEqual(
             new[] { "Insulated Travel Mug", 24.50m.ToString("C"), "1", 24.50m.ToString("C") },
-            rows[1].Children.Select(cell => (cell.QuerySelector(".quantity-value") ?? cell).TextContent.Trim()).ToArray());
+            rows[1].Children.Take(4).Select(cell => (cell.QuerySelector(".quantity-value") ?? cell).TextContent.Trim()).ToArray());
         Assert.AreEqual(122.50m.ToString("C"), cart.Find(".cart-total strong").TextContent);
     }
 
@@ -114,6 +114,37 @@ public sealed class StorefrontComponentTests
         Assert.HasCount(2, cart.FindAll("tbody tr"));
         Assert.AreEqual("1", cart.FindAll(".quantity-value")[1].TextContent);
         Assert.AreEqual(24.50m.ToString("C"), cart.FindAll(".line-total")[1].TextContent);
+    }
+
+    [TestMethod]
+    public void Cart_RemovingProducts_PreservesOtherSelectionsThenShowsEmptyState()
+    {
+        using var context = CreateContext();
+        var shoppingCart = context.Services.GetRequiredService<ShoppingCart>();
+        var products = new InMemoryProductCatalog().GetProducts();
+        shoppingCart.Add(products[0]);
+        shoppingCart.Add(products[0]);
+        shoppingCart.Add(products[1]);
+        shoppingCart.Add(products[1]);
+        var cart = context.Render<CartPage>();
+
+        cart.Find("button[aria-label='Remove Everyday Backpack from cart']").Click();
+
+        Assert.HasCount(1, cart.FindAll("tbody tr"));
+        Assert.AreEqual("Insulated Travel Mug", cart.Find("tbody th").TextContent);
+        Assert.AreEqual("2", cart.Find(".quantity-value").TextContent);
+        Assert.AreEqual(49m.ToString("C"), cart.Find(".line-total").TextContent);
+        Assert.AreEqual(49m.ToString("C"), cart.Find(".cart-total strong").TextContent);
+        Assert.AreEqual("Removed Everyday Backpack from your cart.", cart.Find("[role='status']").TextContent);
+
+        cart.Find("button[aria-label='Remove Insulated Travel Mug from cart']").Click();
+
+        Assert.IsEmpty(cart.FindAll("table"));
+        Assert.IsEmpty(cart.FindAll(".cart-total"));
+        StringAssert.Contains(cart.Markup, "Your cart is empty.");
+        Assert.AreEqual("Continue shopping", cart.Find("a[href='products']").TextContent);
+        Assert.AreEqual("Removed Insulated Travel Mug from your cart.", cart.Find("[role='status']").TextContent);
+        Assert.AreEqual(0m, shoppingCart.Total);
     }
 
     [TestMethod]
