@@ -29,7 +29,17 @@ else
                     <tr @key="item.Product.Id">
                         <th scope="row">@item.Product.Name</th>
                         <td>@item.Product.Price.ToString("C")</td>
-                        <td>@item.Quantity</td>
+                        <td>
+                            <div class="d-inline-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-outline-success btn-sm"
+                                        aria-label="Decrease quantity of @item.Product.Name" disabled="@(item.Quantity == 1)"
+                                        @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, item.Quantity - 1)">-</button>
+                                <span class="cart-quantity">@item.Quantity</span>
+                                <button type="button" class="btn btn-outline-success btn-sm"
+                                        aria-label="Increase quantity of @item.Product.Name"
+                                        @onclick="() => ShoppingCart.Add(item.Product)">+</button>
+                            </div>
+                        </td>
                         <td>@item.LineTotal.ToString("C")</td>
                     </tr>
                 }
