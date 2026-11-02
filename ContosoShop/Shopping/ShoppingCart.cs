@@ -9,6 +9,14 @@ public sealed class ShoppingCart
     public IReadOnlyList<CartItem> Items => items.AsReadOnly();
     public decimal Total => items.Sum(item => item.LineTotal);
 
+    public void Remove(int productId)
+    {
+        if (items.RemoveAll(item => item.Product.Id == productId) == 0)
+        {
+            throw new KeyNotFoundException($"Product {productId} is not in the cart.");
+        }
+    }
+
     public void SetQuantity(int productId, int quantity)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(quantity, 1);
