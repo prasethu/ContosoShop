@@ -1,0 +1,58 @@
+@page "/cart"
+@using ContosoShop.Shopping
+@inject ShoppingCart ShoppingCart
+
+<PageTitle>Shopping cart</PageTitle>
+
+<h1>Shopping cart</h1>
+
+@if (ShoppingCart.Items.Count == 0)
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <caption>Selected products</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Unit price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Line total</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ShoppingCart.Items)
+                {
+                    <tr @key="item.Product.Id">
+                        <th scope="row">@item.Product.Name</th>
+                        <td>@item.Product.Price.ToString("C")</td>
+                        <td>
+                            <div class="d-inline-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-outline-success btn-sm"
+                                        aria-label="Decrease quantity of @item.Product.Name" disabled="@(item.Quantity == 1)"
+                                        @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, item.Quantity - 1)">-</button>
+                                <span class="cart-quantity">@item.Quantity</span>
+                                <button type="button" class="btn btn-outline-success btn-sm"
+                                        aria-label="Increase quantity of @item.Product.Name"
+                                        @onclick="() => ShoppingCart.Add(item.Product)">+</button>
+                            </div>
+                        </td>
+                        <td>@item.LineTotal.ToString("C")</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                    aria-label="Remove @item.Product.Name"
+                                    @onclick="() => ShoppingCart.Remove(item.Product.Id)">Remove</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <p class="fs-4 fw-bold">Cart total: @ShoppingCart.Total.ToString("C")</p>
+}
+
+<a class="btn btn-primary" href="products">Continue shopping</a>
