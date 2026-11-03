@@ -45,10 +45,13 @@ public sealed class StorefrontComponentTests
         using var context = CreateContext();
 
         var component = context.Render<NavMenu>();
+        var brand = component.Find("a.brand");
         var linkText = component.FindAll("a")
             .Select(link => link.TextContent.Trim())
             .ToArray();
 
+        Assert.AreEqual("Contoso Store home", brand.GetAttribute("aria-label"));
+        StringAssert.Contains(brand.TextContent, "Contoso Store");
         CollectionAssert.Contains(linkText, "Home");
         CollectionAssert.Contains(linkText, "Products");
         CollectionAssert.DoesNotContain(linkText, "Counter");
