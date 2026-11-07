@@ -1,0 +1,51 @@
+@page "/cart"
+@inject ContosoShop.Cart.ShoppingCart ShoppingCart
+
+<PageTitle>Shopping cart</PageTitle>
+
+<h1>Shopping cart</h1>
+<p>Your selections are kept while browsing in this app session. Refreshing or restarting starts a new cart.</p>
+<p>Use the quantity buttons to adjust your selections. Each product must have at least one item.</p>
+
+@if (ShoppingCart.Items.Count == 0)
+{
+    <p class="cart-empty">Your cart is empty.</p>
+    <a class="btn btn-primary" href="products">Continue shopping</a>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Unit price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Line total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ShoppingCart.Items)
+                {
+                    <tr @key="item.Product.Id">
+                        <th scope="row">@item.Product.Name</th>
+                        <td>@item.Product.Price.ToString("C")</td>
+                        <td class="quantity-cell">
+                            <div class="d-inline-flex align-items-center gap-2">
+                                <button class="btn btn-outline-secondary btn-sm" aria-label="Decrease @item.Product.Name quantity"
+                                        disabled="@(item.Quantity == 1)" @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, item.Quantity - 1)">-</button>
+                                <span class="cart-quantity" aria-live="polite">@item.Quantity</span>
+                                <button class="btn btn-outline-secondary btn-sm" aria-label="Increase @item.Product.Name quantity"
+                                        @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, checked(item.Quantity + 1))">+</button>
+                            </div>
+                        </td>
+                        <td>@item.LineTotal.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <a class="btn btn-primary" href="products">Continue shopping</a>
+}
+
+<p class="cart-total mt-3"><strong>Cart total: @ShoppingCart.Total.ToString("C")</strong></p>
