@@ -12,6 +12,12 @@ h1 {
     border-radius: 1.35rem;
 }
 
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
 .cart-total {
     color: #17352b;
     font-size: 1.25rem;

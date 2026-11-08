@@ -30,13 +30,25 @@ else
                     <tr @key="item.Product.Id">
                         <th scope="row">@item.Product.Name</th>
                         <td>@item.Product.Price.ToString("C")</td>
-                        <td>@item.Quantity</td>
+                        <td>
+                            <div class="quantity-controls">
+                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        aria-label="Decrease quantity of @item.Product.Name"
+                                        disabled="@(item.Quantity == 1)"
+                                        @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, item.Quantity - 1)">-</button>
+                                <span aria-label="Quantity of @item.Product.Name">@item.Quantity</span>
+                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        aria-label="Increase quantity of @item.Product.Name"
+                                        @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, checked(item.Quantity + 1))">+</button>
+                            </div>
+                        </td>
                         <td>@item.LineTotal.ToString("C")</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    <p class="cart-total">Cart total: @ShoppingCart.Total.ToString("C")</p>
+    <p>Use + and - to adjust quantities. Each product must have a quantity of at least one.</p>
+    <p class="cart-total" role="status">Cart total: @ShoppingCart.Total.ToString("C")</p>
     <a class="btn btn-primary" href="products">Continue shopping</a>
 }
