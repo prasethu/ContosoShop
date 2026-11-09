@@ -1,0 +1,14 @@
+.cart-panel {
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid #e3e7df;
+    border-radius: 1.35rem;
+    box-shadow: 0 8px 24px rgba(23, 53, 43, 0.04);
+}
+
+.cart-total {
+    color: #17352b;
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-align: right;
+}
