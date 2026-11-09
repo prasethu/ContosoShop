@@ -1,0 +1,45 @@
+.cart-header {
+    margin-bottom: 2rem;
+}
+
+.cart-header h1 {
+    color: #17352b;
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-weight: 760;
+    letter-spacing: -0.045em;
+}
+
+.cart-header p, .cart-panel > p:not(.cart-total) {
+    color: #68776f;
+    line-height: 1.65;
+}
+
+.cart-panel {
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid #e3e7df;
+    border-radius: 1.35rem;
+    box-shadow: 0 8px 24px rgba(23, 53, 43, 0.04);
+}
+
+.cart-panel h2 {
+    color: #17352b;
+    font-size: 1.5rem;
+}
+
+.table {
+    color: #24352f;
+    white-space: nowrap;
+}
+
+.table > :not(caption) > * > * {
+    padding: 1rem;
+    border-color: #e3e7df;
+}
+
+.cart-total {
+    margin: 1.5rem 0;
+    color: #17352b;
+    font-size: 1.4rem;
+    font-weight: 800;
+}
