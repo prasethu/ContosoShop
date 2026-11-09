@@ -1,0 +1,19 @@
+h1 {
+    margin-bottom: 1.5rem;
+    color: #17352b;
+    font-weight: 760;
+    letter-spacing: -0.045em;
+}
+
+.cart-items {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    background: white;
+    border: 1px solid #e3e7df;
+    border-radius: 1.35rem;
+}
+
+.table {
+    margin: 0;
+    color: #24352f;
+}
