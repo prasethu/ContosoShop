@@ -5,6 +5,7 @@
 
 <h1>Shopping cart</h1>
 <p>Your selections stay with you while browsing. Refreshing or restarting may clear your cart.</p>
+<p>Adjust quantities below. Each product must have a quantity of at least one.</p>
 
 @if (ShoppingCart.Items.Count == 0)
 {
@@ -30,7 +31,18 @@ else
                         <tr @key="item.Product.Id">
                             <th scope="row">@item.Product.Name</th>
                             <td>@item.Product.Price.ToString("C")</td>
-                            <td>@item.Quantity</td>
+                            <td>
+                                <div class="quantity-controls">
+                                    <button type="button" class="btn btn-outline-success btn-sm"
+                                            aria-label="Decrease quantity of @item.Product.Name"
+                                            disabled="@(item.Quantity == 1)"
+                                            @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, item.Quantity - 1)">-</button>
+                                    <span class="quantity-value" aria-live="polite">@item.Quantity</span>
+                                    <button type="button" class="btn btn-outline-success btn-sm"
+                                            aria-label="Increase quantity of @item.Product.Name"
+                                            @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, checked(item.Quantity + 1))">+</button>
+                                </div>
+                            </td>
                             <td>@item.LineTotal.ToString("C")</td>
                         </tr>
                     }
