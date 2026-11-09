@@ -15,6 +15,17 @@ public sealed class ShoppingCart
 
     public decimal Total => items.Values.Sum(item => item.LineTotal);
 
+    public void IncreaseQuantity(int productId) => Add(items[productId].Product);
+
+    public void DecreaseQuantity(int productId)
+    {
+        var item = items[productId];
+        if (item.Quantity > 1)
+        {
+            items[productId] = item with { Quantity = item.Quantity - 1 };
+        }
+    }
+
     public void Add(Product product)
     {
         ArgumentNullException.ThrowIfNull(product);

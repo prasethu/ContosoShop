@@ -28,7 +28,18 @@ else
                     <tr @key="item.Product.Id">
                         <th scope="row">@item.Product.Name</th>
                         <td>@item.Product.Price.ToString("C")</td>
-                        <td>@item.Quantity</td>
+                        <td>
+                            <div class="d-inline-flex align-items-center gap-2" role="group" aria-label="Quantity for @item.Product.Name">
+                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        aria-label="Decrease quantity for @item.Product.Name"
+                                        disabled="@(item.Quantity == 1)"
+                                        @onclick="() => ShoppingCart.DecreaseQuantity(item.Product.Id)">-</button>
+                                <span aria-live="polite">@item.Quantity</span>
+                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        aria-label="Increase quantity for @item.Product.Name"
+                                        @onclick="() => ShoppingCart.IncreaseQuantity(item.Product.Id)">+</button>
+                            </div>
+                        </td>
                         <td>@item.LineTotal.ToString("C")</td>
                     </tr>
                 }
