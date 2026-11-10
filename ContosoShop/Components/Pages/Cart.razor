@@ -1,0 +1,48 @@
+@page "/cart"
+@using ContosoShop.Cart
+@inject ShoppingCart ShoppingCart
+
+<PageTitle>Shopping cart</PageTitle>
+
+<header class="cart-header">
+    <p class="eyebrow">Your selections</p>
+    <h1>Shopping cart</h1>
+</header>
+
+@if (ShoppingCart.Items.Count == 0)
+{
+    <section class="empty-cart">
+        <h2>Your cart is empty.</h2>
+        <p>Explore the collection to find something for your everyday.</p>
+        <a class="continue-shopping" href="products">Continue shopping</a>
+    </section>
+}
+else
+{
+    <div class="cart-table">
+        <table>
+            <caption class="visually-hidden">Selected products and prices</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Unit price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Line total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ShoppingCart.Items)
+                {
+                    <tr @key="item.Product.Id">
+                        <th scope="row">@item.Product.Name</th>
+                        <td>@item.Product.Price.ToString("C")</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.LineTotal.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <p class="cart-total">Cart total <strong>@ShoppingCart.Total.ToString("C")</strong></p>
+    <a class="continue-shopping" href="products">Continue shopping</a>
+}
