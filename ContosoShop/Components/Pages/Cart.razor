@@ -5,6 +5,7 @@
 <PageTitle>Shopping cart</PageTitle>
 
 <h1>Your cart</h1>
+<p>Your cart stays with you while you browse. Refreshing or restarting may clear it.</p>
 
 @if (ShoppingCart.Items.Count == 0)
 {
@@ -29,13 +30,24 @@ else
                     <tr @key="item.Product.Id">
                         <th scope="row">@item.Product.Name</th>
                         <td>@item.Product.Price.ToString("C")</td>
-                        <td>@item.Quantity</td>
+                        <td>
+                            <div class="quantity-controls">
+                                <button class="btn btn-outline-secondary btn-sm"
+                                        aria-label="Decrease quantity for @item.Product.Name"
+                                        disabled="@(item.Quantity == 1)"
+                                        @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, item.Quantity - 1)">-</button>
+                                <span class="quantity">@item.Quantity</span>
+                                <button class="btn btn-outline-secondary btn-sm"
+                                        aria-label="Increase quantity for @item.Product.Name"
+                                        @onclick="() => ShoppingCart.Add(item.Product)">+</button>
+                            </div>
+                        </td>
                         <td>@item.LineTotal.ToString("C")</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    <p class="cart-total">Cart total: @ShoppingCart.Total.ToString("C")</p>
+    <p class="cart-total" role="status">Cart total: @ShoppingCart.Total.ToString("C")</p>
     <a class="btn btn-primary" href="products">Continue shopping</a>
 }
