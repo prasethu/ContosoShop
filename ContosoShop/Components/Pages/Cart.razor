@@ -30,7 +30,16 @@ else
                     <tr @key="item.Product.Id">
                         <th scope="row">@item.Product.Name</th>
                         <td>@item.Product.Price.ToString("C")</td>
-                        <td>@item.Quantity</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-success btn-sm"
+                                    aria-label="Decrease quantity of @item.Product.Name"
+                                    disabled="@(item.Quantity == 1)"
+                                    @onclick="() => ShoppingCart.DecreaseQuantity(item.Product.Id)">-</button>
+                            <output class="mx-2" aria-label="Quantity of @item.Product.Name">@item.Quantity</output>
+                            <button type="button" class="btn btn-outline-success btn-sm"
+                                    aria-label="Increase quantity of @item.Product.Name"
+                                    @onclick="() => ShoppingCart.IncreaseQuantity(item.Product.Id)">+</button>
+                        </td>
                         <td>@item.LineTotal.ToString("C")</td>
                     </tr>
                 }

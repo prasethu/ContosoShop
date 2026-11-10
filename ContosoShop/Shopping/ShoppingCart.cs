@@ -16,4 +16,16 @@ public sealed class ShoppingCart
             ? item with { Quantity = checked(item.Quantity + 1) }
             : new CartItem(product, 1);
     }
+
+    public void IncreaseQuantity(int productId)
+    {
+        var item = items[productId];
+        items[productId] = item with { Quantity = checked(item.Quantity + 1) };
+    }
+
+    public void DecreaseQuantity(int productId)
+    {
+        var item = items[productId];
+        items[productId] = item with { Quantity = Math.Max(1, item.Quantity - 1) };
+    }
 }
