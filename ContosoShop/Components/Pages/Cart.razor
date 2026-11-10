@@ -7,6 +7,7 @@
 <header class="cart-header">
     <h1>Your cart</h1>
     <p>Your selections stay with you while browsing. Refreshing or closing the app starts a new cart.</p>
+    <p>Adjust quantities below. Each selected product has a minimum quantity of one.</p>
 </header>
 
 @if (ShoppingCart.Items.Count == 0)
@@ -36,7 +37,15 @@ else
                         <tr @key="item.Product.Id">
                             <th scope="row">@item.Product.Name</th>
                             <td>@item.Product.Price.ToString("C")</td>
-                            <td>@item.Quantity</td>
+                            <td>
+                                <div class="quantity-controls" role="group" aria-label="@($"Quantity for {item.Product.Name}")">
+                                    <button type="button" class="btn btn-outline-secondary" aria-label="@($"Decrease quantity for {item.Product.Name}")"
+                                            disabled="@(item.Quantity <= 1)" @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, item.Quantity - 1)">-</button>
+                                    <span class="quantity-value" aria-live="polite">@item.Quantity</span>
+                                    <button type="button" class="btn btn-outline-secondary" aria-label="@($"Increase quantity for {item.Product.Name}")"
+                                            disabled="@(item.Quantity == int.MaxValue)" @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, checked(item.Quantity + 1))">+</button>
+                                </div>
+                            </td>
                             <td>@item.LineTotal.ToString("C")</td>
                         </tr>
                     }
