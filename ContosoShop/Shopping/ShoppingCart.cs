@@ -9,6 +9,14 @@ public sealed class ShoppingCart
     public IReadOnlyList<CartItem> Items => items.AsReadOnly();
     public decimal Total => items.Sum(item => item.LineTotal);
 
+    public void IncreaseQuantity(int productId) => GetItem(productId).Increment();
+
+    public void DecreaseQuantity(int productId) => GetItem(productId).Decrement();
+
+    private CartItem GetItem(int productId) =>
+        items.Find(item => item.Product.Id == productId)
+        ?? throw new KeyNotFoundException($"Product {productId} is not in the cart.");
+
     public void Add(Product product)
     {
         ArgumentNullException.ThrowIfNull(product);
