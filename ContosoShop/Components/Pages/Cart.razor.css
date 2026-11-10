@@ -1,0 +1,23 @@
+h1 {
+    color: #17352b;
+    font-weight: 760;
+    letter-spacing: -0.045em;
+}
+
+.cart-items {
+    background: white;
+    border: 1px solid #e3e7df;
+    border-radius: 1.35rem;
+    padding: 1rem;
+}
+
+.table {
+    color: #24352f;
+    --bs-table-color: #24352f;
+    --bs-table-border-color: #e3e7df;
+}
+
+.cart-total {
+    color: #17352b;
+    font-size: 1.25rem;
+}
