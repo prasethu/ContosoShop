@@ -48,4 +48,14 @@ public sealed class CartItem
     {
         Quantity = checked(Quantity + 1);
     }
+
+    internal void DecreaseQuantity()
+    {
+        if (Quantity <= 1)
+        {
+            throw new InvalidOperationException("Cart quantity cannot be less than one.");
+        }
+
+        Quantity--;
+    }
 }
