@@ -2,6 +2,7 @@ using Bunit;
 using ContosoShop.Catalog;
 using ContosoShop.Components.Layout;
 using ContosoShop.Components.Pages;
+using ContosoShop.Shopping;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ContosoShop.Tests;
@@ -59,21 +60,24 @@ public sealed class StorefrontComponentTests
     }
 
     [TestMethod]
-    public void Products_DoesNotRenderCartControls()
+    public void Products_ProvidesAddToCartForEveryProduct()
     {
         using var context = CreateContext();
 
         var component = context.Render<Products>();
 
-        Assert.IsEmpty(component.FindAll("button"));
-        Assert.IsEmpty(component.FindAll("input[type='number']"));
-        Assert.IsFalse(component.Markup.Contains("order summary", StringComparison.OrdinalIgnoreCase));
+        foreach (var product in new InMemoryProductCatalog().GetProducts())
+        {
+            var button = component.Find($"button[aria-label='Add {product.Name} to cart']");
+            Assert.AreEqual("Add to cart", button.TextContent.Trim());
+        }
     }
 
     private static BunitContext CreateContext()
     {
         var context = new BunitContext();
         context.Services.AddSingleton<IProductCatalog, InMemoryProductCatalog>();
+        context.Services.AddScoped<ShoppingCart>();
         return context;
     }
 }
