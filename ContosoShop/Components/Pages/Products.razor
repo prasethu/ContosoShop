@@ -1,6 +1,8 @@
 @page "/products"
 @using ContosoShop.Catalog
+@using ContosoShop.Shopping
 @inject IProductCatalog ProductCatalog
+@inject ShoppingCart ShoppingCart
 
 <PageTitle>Products</PageTitle>
 
@@ -26,13 +28,23 @@
                     <p class="product-price">@product.Price.ToString("C")</p>
                 </div>
                 <p class="product-description">@product.Description</p>
+                <button type="button" class="btn btn-primary mt-3" @onclick="() => AddToCart(product)">Add to cart</button>
             </div>
         </article>
     }
 </div>
 
+<p role="status" class="mt-3">@cartMessage</p>
+
 @code {
     private IReadOnlyList<Product> products = [];
+    private string? cartMessage;
+
+    private void AddToCart(Product product)
+    {
+        ShoppingCart.Add(product);
+        cartMessage = $"{product.Name} added to cart.";
+    }
 
     protected override void OnInitialized()
     {
