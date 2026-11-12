@@ -1,0 +1,36 @@
+.cart-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.cart-header h1 {
+    margin: 0;
+    color: #17352b;
+    font-weight: 760;
+    letter-spacing: -0.045em;
+}
+
+.cart-items {
+    padding: 1.5rem;
+    overflow-x: auto;
+    background: white;
+    border: 1px solid #e3e7df;
+    border-radius: 1.35rem;
+    box-shadow: 0 8px 24px rgba(23, 53, 43, 0.04);
+}
+
+.cart-items table {
+    white-space: nowrap;
+}
+
+.cart-total {
+    margin: 1.5rem 0 0;
+    color: #17352b;
+    text-align: right;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
