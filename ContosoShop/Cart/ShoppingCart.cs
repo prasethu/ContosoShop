@@ -18,6 +18,13 @@ public sealed class ShoppingCart
             ? item with { Quantity = checked(item.Quantity + 1) }
             : new CartItem(product, 1);
     }
+
+    public void SetQuantity(int productId, int quantity)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(quantity, 1);
+
+        items[productId] = items[productId] with { Quantity = quantity };
+    }
 }
 
 public sealed record CartItem(Product Product, int Quantity)
