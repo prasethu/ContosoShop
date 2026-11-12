@@ -1,4 +1,5 @@
 using Bunit;
+using ContosoShop.Cart;
 using ContosoShop.Catalog;
 using ContosoShop.Components.Layout;
 using ContosoShop.Components.Pages;
@@ -54,18 +55,21 @@ public sealed class StorefrontComponentTests
         StringAssert.Contains(brand.TextContent, "Contoso Store");
         CollectionAssert.Contains(linkText, "Home");
         CollectionAssert.Contains(linkText, "Products");
+        CollectionAssert.Contains(linkText, "Cart");
         CollectionAssert.DoesNotContain(linkText, "Counter");
         CollectionAssert.DoesNotContain(linkText, "Weather");
     }
 
     [TestMethod]
-    public void Products_DoesNotRenderCartControls()
+    public void Products_RendersAddToCartActions()
     {
         using var context = CreateContext();
 
         var component = context.Render<Products>();
 
-        Assert.IsEmpty(component.FindAll("button"));
+        var buttons = component.FindAll("button");
+        Assert.HasCount(new InMemoryProductCatalog().GetProducts().Count, buttons);
+        Assert.IsTrue(buttons.All(button => button.TextContent.Trim() == "Add to cart"));
         Assert.IsEmpty(component.FindAll("input[type='number']"));
         Assert.IsFalse(component.Markup.Contains("order summary", StringComparison.OrdinalIgnoreCase));
     }
@@ -74,6 +78,7 @@ public sealed class StorefrontComponentTests
     {
         var context = new BunitContext();
         context.Services.AddSingleton<IProductCatalog, InMemoryProductCatalog>();
+        context.Services.AddScoped<ShoppingCart>();
         return context;
     }
 }
