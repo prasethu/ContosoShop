@@ -36,5 +36,15 @@ public sealed class CartItem
     public int Quantity { get; private set; } = 1;
     public decimal LineTotal => Product.Price * Quantity;
 
-    internal void Increase() => Quantity = checked(Quantity + 1);
+    public void Increase() => Quantity = checked(Quantity + 1);
+
+    public void Decrease()
+    {
+        if (Quantity <= 1)
+        {
+            throw new InvalidOperationException("Cart quantities cannot fall below one.");
+        }
+
+        Quantity--;
+    }
 }
