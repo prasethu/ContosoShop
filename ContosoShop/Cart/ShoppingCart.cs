@@ -14,6 +14,12 @@ public sealed class CartItem
     public decimal LineTotal => Product.Price * Quantity;
 
     internal void IncreaseQuantity() => Quantity = checked(Quantity + 1);
+
+    internal void SetQuantity(int quantity)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(quantity, 1);
+        Quantity = quantity;
+    }
 }
 
 public sealed class ShoppingCart
@@ -22,6 +28,13 @@ public sealed class ShoppingCart
 
     public IReadOnlyList<CartItem> Items => items.AsReadOnly();
     public decimal Total => items.Sum(item => item.LineTotal);
+
+    public void SetQuantity(int productId, int quantity)
+    {
+        var item = items.FirstOrDefault(item => item.Product.Id == productId)
+            ?? throw new KeyNotFoundException($"Product {productId} is not in the cart.");
+        item.SetQuantity(quantity);
+    }
 
     public void AddProduct(Product product)
     {
