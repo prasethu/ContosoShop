@@ -1,0 +1,23 @@
+h1 {
+    margin-bottom: 1.5rem;
+    color: #17352b;
+    font-weight: 760;
+    letter-spacing: -0.045em;
+}
+
+.cart-panel {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    background: white;
+    border: 1px solid #e3e7df;
+    border-radius: 1.35rem;
+    box-shadow: 0 8px 24px rgba(23, 53, 43, 0.04);
+}
+
+.cart-total {
+    margin: 1.25rem 0 0;
+    color: #17352b;
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-align: right;
+}
