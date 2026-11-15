@@ -28,4 +28,16 @@ public sealed class ShoppingCart
             item.Quantity = checked(item.Quantity + 1);
         }
     }
+
+    public void IncreaseQuantity(int productId)
+    {
+        var item = items.Single(item => item.Product.Id == productId);
+        item.Quantity = checked(item.Quantity + 1);
+    }
+
+    public void DecreaseQuantity(int productId)
+    {
+        var item = items.Single(item => item.Product.Id == productId);
+        item.Quantity = Math.Max(1, item.Quantity - 1);
+    }
 }

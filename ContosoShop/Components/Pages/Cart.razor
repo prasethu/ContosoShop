@@ -29,14 +29,25 @@ else
                         <tr @key="item.Product.Id">
                             <th scope="row">@item.Product.Name</th>
                             <td>@item.Product.Price.ToString("C")</td>
-                            <td>@item.Quantity</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <button class="btn btn-outline-success btn-sm"
+                                            aria-label="Decrease quantity of @item.Product.Name"
+                                            disabled="@(item.Quantity <= 1)"
+                                            @onclick="() => ShoppingCart.DecreaseQuantity(item.Product.Id)">-</button>
+                                    <span aria-label="Quantity of @item.Product.Name">@item.Quantity</span>
+                                    <button class="btn btn-outline-success btn-sm"
+                                            aria-label="Increase quantity of @item.Product.Name"
+                                            @onclick="() => ShoppingCart.IncreaseQuantity(item.Product.Id)">+</button>
+                                </div>
+                            </td>
                             <td>@item.LineTotal.ToString("C")</td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-        <p class="cart-total">Cart total: @ShoppingCart.Total.ToString("C")</p>
+        <p class="cart-total">Cart total (USD): @ShoppingCart.Total.ToString("C")</p>
         <a class="btn btn-primary" href="products">Continue shopping</a>
     </div>
 }
