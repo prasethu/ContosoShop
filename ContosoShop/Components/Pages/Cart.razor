@@ -20,6 +20,7 @@
 else
 {
     <section class="cart-panel" aria-label="Cart items">
+        <p>Use the quantity controls to adjust your selections. Each product has a minimum quantity of one.</p>
         <div class="table-responsive">
             <table class="table align-middle">
                 <thead>
@@ -36,14 +37,25 @@ else
                         <tr @key="item.Product.Id">
                             <th scope="row">@item.Product.Name</th>
                             <td>@item.Product.Price.ToString("C")</td>
-                            <td>@item.Quantity</td>
+                            <td>
+                                <div class="quantity-controls">
+                                    <button type="button" class="btn btn-outline-success btn-sm"
+                                            aria-label="Decrease quantity for @item.Product.Name"
+                                            disabled="@(item.Quantity <= 1)"
+                                            @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, item.Quantity - 1)">-</button>
+                                    <span class="quantity">@item.Quantity</span>
+                                    <button type="button" class="btn btn-outline-success btn-sm"
+                                            aria-label="Increase quantity for @item.Product.Name"
+                                            @onclick="() => ShoppingCart.SetQuantity(item.Product.Id, checked(item.Quantity + 1))">+</button>
+                                </div>
+                            </td>
                             <td>@item.LineTotal.ToString("C")</td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-        <p class="cart-total">Cart total: @ShoppingCart.Total.ToString("C")</p>
+        <p class="cart-total" aria-live="polite">Cart total (USD): @ShoppingCart.Total.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</p>
         <a class="btn btn-primary" href="products">Continue shopping</a>
     </section>
 }
