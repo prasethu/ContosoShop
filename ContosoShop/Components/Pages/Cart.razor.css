@@ -1,0 +1,44 @@
+.cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+h1, h2 {
+    color: #17352b;
+    font-weight: 760;
+    letter-spacing: -0.035em;
+}
+
+.empty-cart, .cart-details {
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid #e3e7df;
+    border-radius: 1.35rem;
+    box-shadow: 0 8px 24px rgba(23, 53, 43, 0.04);
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 3rem 1.5rem;
+}
+
+.empty-cart p {
+    color: #68776f;
+}
+
+.cart-details {
+    overflow-x: auto;
+}
+
+.table > :not(caption) > * > * {
+    padding: 1rem;
+    color: #17352b;
+    border-color: #e3e7df;
+}
+
+tfoot {
+    font-weight: 800;
+}
