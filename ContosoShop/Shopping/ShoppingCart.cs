@@ -22,12 +22,25 @@ public sealed class ShoppingCart
         if (index >= 0)
         {
             var item = items[index];
-            items[index] = item with { Quantity = checked(item.Quantity + 1) };
+            SetQuantity(product.Id, checked(item.Quantity + 1));
         }
         else
         {
             items.Add(new CartItem(product, 1));
         }
+    }
+
+    public void SetQuantity(int productId, int quantity)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(quantity, 1);
+
+        var index = items.FindIndex(item => item.Product.Id == productId);
+        if (index < 0)
+        {
+            throw new ArgumentException("The product is not in the cart.", nameof(productId));
+        }
+
+        items[index] = items[index] with { Quantity = quantity };
     }
 }
 
