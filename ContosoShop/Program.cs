@@ -1,5 +1,6 @@
 using ContosoShop.Catalog;
 using ContosoShop.Components;
+using ContosoShop.Cart;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddSingleton<IProductCatalog, InMemoryProductCatalog>();
+builder.Services.AddScoped<ShoppingCart>();
 
 var app = builder.Build();
 
